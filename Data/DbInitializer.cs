@@ -16,7 +16,7 @@ namespace Moldovan_Andrei_Lab1.Data
                 context.Customers.AddRange(
                 new Customer { Name = "Popescu Marcela", Adress = "Str. Plopilor, nr. 24", BirthDate = DateTime.Parse("1979-09-01") }, new Customer { Name = "Mihailescu Cornel", Adress = "Str. Bucuresti, nr. 45, ap. 2", BirthDate = DateTime.Parse("1969-07-08") }
                 );
-                context.SaveChanges();
+                context.SaveChanges();  
             }
         }
     }
