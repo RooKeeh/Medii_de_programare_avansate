@@ -20,8 +20,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Author" class="control-label"></label>
-                <input asp-for="Author" class="form-control" />
-                <span asp-validation-for="Author" class="text-danger"></span>
+                <select asp-for="AuthorID" asp-items="ViewBag.AuthorList" class="form-control"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Price" class="control-label"></label>

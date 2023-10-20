@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Moldovan_Andrei_Lab1.Data;
 
@@ -11,9 +12,11 @@ using Moldovan_Andrei_Lab1.Data;
 namespace Moldovan_Andrei_Lab1.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20231020065525_AddedAuthor")]
+    partial class AddedAuthor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -24,11 +27,11 @@ namespace Moldovan_Andrei_Lab1.Migrations
 
             modelBuilder.Entity("Moldovan_Andrei_Lab1.Models.Author", b =>
                 {
-                    b.Property<int>("AuthorID")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("AuthorID"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<string>("FirstName")
                         .IsRequired()
@@ -38,9 +41,9 @@ namespace Moldovan_Andrei_Lab1.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("AuthorID");
+                    b.HasKey("ID");
 
-                    b.ToTable("Author", (string)null);
+                    b.ToTable("Author");
                 });
 
             modelBuilder.Entity("Moldovan_Andrei_Lab1.Models.Book", b =>

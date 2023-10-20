@@ -22,9 +22,11 @@ namespace Moldovan_Andrei_Lab1.Controllers
         // GET: Books
         public async Task<IActionResult> Index()
         {
-              return _context.Books != null ? 
-                          View(await _context.Books.ToListAsync()) :
-                          Problem("Entity set 'LibraryContext.Books'  is null.");
+            var books = await _context.Books
+      .Include(b => b.Author)
+      .ToListAsync();
+
+            return View(books);
         }
 
         // GET: Books/Details/5
@@ -36,6 +38,7 @@ namespace Moldovan_Andrei_Lab1.Controllers
             }
 
             var book = await _context.Books
+                .Include(b => b.Author)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (book == null)
             {
@@ -45,18 +48,16 @@ namespace Moldovan_Andrei_Lab1.Controllers
             return View(book);
         }
 
-        // GET: Books/Create
+
         public IActionResult Create()
         {
+            ViewBag.AuthorList = new SelectList(_context.Author, "AuthorID", "LastName");
             return View();
         }
 
-        // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ID,Title,Author,Price")] Book book)
+        public async Task<IActionResult> Create([Bind("ID,Title,AuthorID,Price")] Book book)
         {
             if (ModelState.IsValid)
             {
@@ -64,11 +65,13 @@ namespace Moldovan_Andrei_Lab1.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.AuthorList = new SelectList(_context.Author, "AuthorID", "LastName");
             return View(book);
         }
 
+
         // GET: Books/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> EditAsync(int? id)
         {
             if (id == null || _context.Books == null)
             {
@@ -80,6 +83,8 @@ namespace Moldovan_Andrei_Lab1.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.AuthorList = new SelectList(_context.Author, "AuthorID", "LastName");
             return View(book);
         }
 
@@ -88,7 +93,7 @@ namespace Moldovan_Andrei_Lab1.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,Author,Price")] Book book)
+        public async Task<IActionResult> Edit(int id, [Bind("ID,Title,AuthorID,Price")] Book book)
         {
             if (id != book.ID)
             {
@@ -127,6 +132,7 @@ namespace Moldovan_Andrei_Lab1.Controllers
             }
 
             var book = await _context.Books
+                .Include(b => b.Author)
                 .FirstOrDefaultAsync(m => m.ID == id);
             if (book == null)
             {

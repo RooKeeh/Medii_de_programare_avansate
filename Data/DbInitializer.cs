@@ -12,11 +12,11 @@ namespace Moldovan_Andrei_Lab1.Data
                 {
                     return;
                 }
-                context.Books.AddRange(new Book { Title = "Baltagul", Author = "Mihail Sadoveanu", Price = Decimal.Parse("22") }, new Book { Title = "Enigma Otiliei", Author = "George Calinescu", Price = Decimal.Parse("18") }, new Book { Title = "Maytrei", Author = "Mircea Eliade", Price = Decimal.Parse("27") });
+                context.Books.AddRange(new Book { Title = "Baltagul", Author = { FirstName = "Mihail", LastName = "Sadoveanu" }, Price = Decimal.Parse("22") }, new Book { Title = "Enigma Otiliei", Author = { FirstName = "George", LastName = "Calinescu" }, Price = Decimal.Parse("18") }, new Book { Title = "Maytrei", Author = { FirstName = "Mircea", LastName = "Eliade" }, Price = Decimal.Parse("27") });
                 context.Customers.AddRange(
                 new Customer { Name = "Popescu Marcela", Adress = "Str. Plopilor, nr. 24", BirthDate = DateTime.Parse("1979-09-01") }, new Customer { Name = "Mihailescu Cornel", Adress = "Str. Bucuresti, nr. 45, ap. 2", BirthDate = DateTime.Parse("1969-07-08") }
                 );
-                context.SaveChanges();  
+                context.SaveChanges();
             }
         }
     }
