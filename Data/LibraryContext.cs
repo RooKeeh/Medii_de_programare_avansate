@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Moldovan_Andrei_Lab1.Models;
+using System.Security.Policy;
 
 namespace Moldovan_Andrei_Lab1.Data
 {
@@ -13,6 +14,8 @@ namespace Moldovan_Andrei_Lab1.Data
         public DbSet<Author> Author { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Book> Books { get; set; }
+        public DbSet<Models.Publisher> Publishers { get; set; }
+        public DbSet<PublishedBook> PublishedBooks { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -20,6 +23,10 @@ namespace Moldovan_Andrei_Lab1.Data
             modelBuilder.Entity<Author>().ToTable("Author");
             modelBuilder.Entity<Order>().ToTable("Order");
             modelBuilder.Entity<Book>().ToTable("Book");
+            modelBuilder.Entity<Models.Publisher>().ToTable("Publisher");
+            modelBuilder.Entity<PublishedBook>().ToTable("PublishedBook");
+            modelBuilder.Entity<PublishedBook>()
+            .HasKey(c => new { c.BookID, c.PublisherID });
         }
     }
 }

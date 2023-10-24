@@ -1,0 +1,11 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Moldovan_Andrei_Lab1.Models.LibraryViewModels
+{
+    public class OrderGroup
+    {
+        [DataType(DataType.Date)]
+        public DateTime? OrderDate { get; set; }
+        public int BookCount { get; set; }
+    }
+}

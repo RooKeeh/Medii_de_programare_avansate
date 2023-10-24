@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +37,8 @@ namespace Moldovan_Andrei_Lab1.Controllers
             ViewData["CurrentFilter"] = searchString;
             var books = from b in _context.Books
                         select b;
+            await _context.Books
+            .Include(b => b.Author).AsNoTracking().FirstOrDefaultAsync();
             if (!String.IsNullOrEmpty(searchString))
             {
                 books = books.Where(s => s.Title.Contains(searchString));
@@ -56,7 +59,7 @@ namespace Moldovan_Andrei_Lab1.Controllers
                     break;
             }
             int pageSize = 2;
-            return View(await PaginatedList<Book>.CreateAsync(books.AsNoTracking(), pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<Book>.CreateAsync(books.Include(b => b.Author).AsNoTracking(), pageNumber ?? 1, pageSize));
         }
 
         // GET: Books/Details/5
@@ -91,7 +94,7 @@ namespace Moldovan_Andrei_Lab1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Author,Price")] Book book)
+        public async Task<IActionResult> Create([Bind("Title,AuthorID,Price")] Book book)
         {
             try
             {
@@ -112,7 +115,6 @@ namespace Moldovan_Andrei_Lab1.Controllers
             return View(book);
         }
 
-
         // GET: Books/Edit/5
         public async Task<IActionResult> EditAsync(int? id)
         {
@@ -132,8 +134,6 @@ namespace Moldovan_Andrei_Lab1.Controllers
         }
 
         // POST: Books/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> EditPost(int? id)
@@ -143,17 +143,14 @@ namespace Moldovan_Andrei_Lab1.Controllers
                 return NotFound();
             }
             var bookToUpdate = await _context.Books.FirstOrDefaultAsync(s => s.ID == id);
-            if (await TryUpdateModelAsync<Book>(
-            bookToUpdate,
-            "",
-            s => s.Author, s => s.Title, s => s.Price))
+            if (await TryUpdateModelAsync<Book>(bookToUpdate, "", s => s.Author, s => s.Title, s => s.Price))
             {
                 try
                 {
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-                catch (DbUpdateException /* ex */)
+                catch (DbUpdateException)
                 {
                     ModelState.AddModelError("", "Unable to save changes. " +
                     "Try again, and if the problem persists");
@@ -163,9 +160,6 @@ namespace Moldovan_Andrei_Lab1.Controllers
         }
 
         // GET: Books/Delete/5
-        /*var book = await _context.Books
-                .Include(b => b.Author)
-                .FirstOrDefaultAsync(m => m.ID == id);*/
         public async Task<IActionResult> Delete(int? id, bool? saveChangesError = false)
         {
             if (id == null)
