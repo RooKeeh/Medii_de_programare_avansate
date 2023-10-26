@@ -74,28 +74,10 @@
                     @item.Title
                 </td>
                 <td>
-                    @item.Author.LastName
-                </td>
+                    @item.Author
+                </td>   
                 <td>
                     @item.Price
-                </td>
-            </tr>
-        }
-    </table>
-}
-
-@if (Model.Customers != null)
-{
-    <h3>Customers Who Ordered Selected Book</h3>
-    <table class="table">
-        <tr>
-            <th>Customer Name</th>
-        </tr>
-        @foreach (var customer in Model.Customers)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => customer.Name)
                 </td>
             </tr>
         }
