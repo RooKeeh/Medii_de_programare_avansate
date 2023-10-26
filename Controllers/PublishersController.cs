@@ -25,26 +25,29 @@ namespace Moldovan_Andrei_Lab1.Controllers
         {
             var viewModel = new PublisherIndexData();
             viewModel.Publishers = await _context.Publishers
-            .Include(i => i.PublishedBooks)
-            .ThenInclude(i => i.Book)
-            .ThenInclude(i => i.Orders)
-            .ThenInclude(i => i.Customer)
-            .AsNoTracking()
-            .OrderBy(i => i.PublisherName)
-            .ToListAsync();
+                .Include(i => i.PublishedBooks)
+                .ThenInclude(i => i.Book)
+                .ThenInclude(i => i.Orders)
+                .ThenInclude(i => i.Customer)
+                .AsNoTracking()
+                .OrderBy(i => i.PublisherName)
+                .ToListAsync();
+
             if (id != null)
             {
                 ViewData["PublisherID"] = id.Value;
-                Publisher publisher = viewModel.Publishers.Where(
-                i => i.ID == id.Value).Single();
+                Publisher publisher = viewModel.Publishers.Where(i => i.ID == id.Value).Single();
                 viewModel.Books = publisher.PublishedBooks.Select(s => s.Book);
             }
+
             if (bookID != null)
             {
                 ViewData["BookID"] = bookID.Value;
-                viewModel.Orders = viewModel.Books.Where(
-                x => x.ID == bookID).Single().Orders;
+                viewModel.Orders = viewModel.Books.Where(x => x.ID == bookID).Single().Orders;
+
+                viewModel.Customers = viewModel.Orders.Select(order => order.Customer);
             }
+
             return View(viewModel);
         }
 
