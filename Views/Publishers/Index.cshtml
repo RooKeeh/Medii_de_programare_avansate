@@ -83,3 +83,29 @@
         }
     </table>
 }
+
+@if (Model.Customers != null)
+{
+    <h3>Customers who ordered Selected Book</h3>
+    <table class="table">
+        <tr>
+            <th>Name</th>
+            <th>Adress</th>
+            <th>Birth Date</th>
+        </tr>
+        @foreach (var customer in Model.Customers)
+        {
+            <tr>
+                <td>
+                    @customer.Name
+                </td>
+                <td>
+                    @customer.Adress
+                </td>
+                <td>
+                    @customer.BirthDate
+                </td>
+            </tr>
+        }
+    </table>
+}
