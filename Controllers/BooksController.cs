@@ -143,7 +143,7 @@ namespace Moldovan_Andrei_Lab1.Controllers
                 return NotFound();
             }
             var bookToUpdate = await _context.Books.FirstOrDefaultAsync(s => s.ID == id);
-            if (await TryUpdateModelAsync<Book>(bookToUpdate, "", s => s.Author, s => s.Title, s => s.Price))
+            if (await TryUpdateModelAsync<Book>(bookToUpdate, "", s => s.AuthorID, s => s.Title, s => s.Price))
             {
                 try
                 {
