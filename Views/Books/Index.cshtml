@@ -25,10 +25,7 @@
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["TitleSortParm"]" asp-routecurrentFilter="@ViewData["CurrentFilter"]">Title</a>
             </th>
             <th>
-                Author Last Name
-            </th>
-            <th>
-                Author First Name
+                Author
             </th>
             <th>
                 <a asp-action="Index" asp-route-sortOrder="@ViewData["PriceSortParm"]" asp-routecurrentFilter="@ViewData["CurrentFilter"]">Price</a>
@@ -44,10 +41,7 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Author.LastName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Author.FirstName)
+                    @Html.DisplayFor(modelItem => item.Author.FirstName) @Html.DisplayFor(modelItem => item.Author.LastName)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Price)

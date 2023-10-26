@@ -26,6 +26,8 @@ namespace Moldovan_Andrei_Lab1.Controllers
             var viewModel = new PublisherIndexData();
             viewModel.Publishers = await _context.Publishers
                 .Include(i => i.PublishedBooks)
+                .ThenInclude(i => i.Book).ThenInclude(i => i.Author)
+                .Include(i => i.PublishedBooks)
                 .ThenInclude(i => i.Book)
                 .ThenInclude(i => i.Orders)
                 .ThenInclude(i => i.Customer)
