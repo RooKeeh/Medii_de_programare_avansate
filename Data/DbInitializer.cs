@@ -18,12 +18,9 @@ namespace Moldovan_Andrei_Lab1.Data
                 );
                 var orders = new Order[]
                 {
-                    new Order{BookID=1,CustomerID=1050,OrderDate=DateTime.Parse("2021-02-25")},
-                    new Order{BookID=3,CustomerID=1045,OrderDate=DateTime.Parse("2021-09-28")},
-                    new Order{BookID=1,CustomerID=1045,OrderDate=DateTime.Parse("2021-10-28")},
-                    new Order{BookID=2,CustomerID=1050,OrderDate=DateTime.Parse("2021-09-28")},
-                    new Order{BookID=4,CustomerID=1050,OrderDate=DateTime.Parse("2021-09-28")},
-                    new Order{BookID=6,CustomerID=1050,OrderDate=DateTime.Parse("2021-10-28")},
+                    new Order{BookID=16,CustomerID=1,OrderDate=DateTime.Parse("2021-02-25")},
+                    new Order{BookID=17,CustomerID=2,OrderDate=DateTime.Parse("2021-09-28")},
+                    new Order{BookID=18,CustomerID=3,OrderDate=DateTime.Parse("2021-10-28")},
                 };
                 foreach (Order e in orders)
                 {
