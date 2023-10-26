@@ -26,6 +26,8 @@ namespace Moldovan_Andrei_Lab1.Controllers
             var viewModel = new PublisherIndexData();
             viewModel.Publishers = await _context.Publishers
                 .Include(i => i.PublishedBooks)
+                .ThenInclude(i => i.Book).ThenInclude(i=>i.Author)
+                .Include(i => i.PublishedBooks)
                 .ThenInclude(i => i.Book)
                 .ThenInclude(i => i.Orders)
                 .ThenInclude(i => i.Customer)
@@ -44,6 +46,18 @@ namespace Moldovan_Andrei_Lab1.Controllers
             {
                 ViewData["BookID"] = bookID.Value;
                 viewModel.Orders = viewModel.Books.Where(x => x.ID == bookID).Single().Orders;
+             /*   viewModel.Orders = viewModel.Books.Join(viewModel.Authors,
+                      book => book.AuthorID,
+                      author => author.AuthorID,
+                      (book, author) => new
+                      {
+                          ID = book.ID,
+                          Title = book.Title,
+                          Author = author.FirstName + " " + author.LastName,
+                          Price = book.Price,
+                          Orders = book.Orders
+                      }).Where(x => x.ID == bookID).Single().Orders;
+             */
 
                 viewModel.Customers = viewModel.Orders.Select(order => order.Customer);
             }
