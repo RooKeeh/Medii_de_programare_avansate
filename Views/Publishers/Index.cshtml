@@ -92,6 +92,7 @@
             <th>Name</th>
             <th>Adress</th>
             <th>Birth Date</th>
+            <th>City</th>
         </tr>
         @foreach (var customer in Model.Customers)
         {
@@ -104,6 +105,9 @@
                 </td>
                 <td>
                     @customer.BirthDate
+                </td>
+                <td>
+                    @customer.City.CityName
                 </td>
             </tr>
         }

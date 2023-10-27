@@ -40,7 +40,7 @@ namespace LibraryWebAPI.Controllers
             {
                 return NotFound();
             }
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _context.Customers.Include(i=>i.City).FirstOrDefaultAsync(m => m.CustomerID == id);
 
             if (customer == null)
             {

@@ -31,6 +31,7 @@ namespace Moldovan_Andrei_Lab1.Controllers
                 .ThenInclude(i => i.Book)
                 .ThenInclude(i => i.Orders)
                 .ThenInclude(i => i.Customer)
+                .ThenInclude(i => i.City)
                 .AsNoTracking()
                 .OrderBy(i => i.PublisherName)
                 .ToListAsync();

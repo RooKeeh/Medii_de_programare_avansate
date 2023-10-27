@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Moldovan_Andrei_Lab1.Data;
 
@@ -11,9 +12,11 @@ using Moldovan_Andrei_Lab1.Data;
 namespace Moldovan_Andrei_Lab1.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class LibraryContextModelSnapshot : ModelSnapshot
+    [Migration("20231027101756_CityDeletedFromCustomer")]
+    partial class CityDeletedFromCustomer
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,15 +98,10 @@ namespace Moldovan_Andrei_Lab1.Migrations
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("CityID")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("CustomerID");
-
-                    b.HasIndex("CityID");
 
                     b.ToTable("Customer", (string)null);
                 });
@@ -182,15 +180,6 @@ namespace Moldovan_Andrei_Lab1.Migrations
                     b.Navigation("Author");
                 });
 
-            modelBuilder.Entity("Moldovan_Andrei_Lab1.Models.Customer", b =>
-                {
-                    b.HasOne("LibraryModel.Models.City", "City")
-                        .WithMany("Customers")
-                        .HasForeignKey("CityID");
-
-                    b.Navigation("City");
-                });
-
             modelBuilder.Entity("Moldovan_Andrei_Lab1.Models.Order", b =>
                 {
                     b.HasOne("Moldovan_Andrei_Lab1.Models.Book", "Book")
@@ -227,11 +216,6 @@ namespace Moldovan_Andrei_Lab1.Migrations
                     b.Navigation("Book");
 
                     b.Navigation("Publisher");
-                });
-
-            modelBuilder.Entity("LibraryModel.Models.City", b =>
-                {
-                    b.Navigation("Customers");
                 });
 
             modelBuilder.Entity("Moldovan_Andrei_Lab1.Models.Book", b =>

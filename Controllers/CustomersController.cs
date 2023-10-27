@@ -31,13 +31,13 @@ namespace Moldovan_Andrei_Lab1.Controllers
 
             if (response.IsSuccessStatusCode)
             {
-                var customers = JsonConvert.DeserializeObject<List<Customer>>(await
-               response.Content.
+                var customers = JsonConvert.DeserializeObject<List<CustomerCity>>(await response.Content.
                 ReadAsStringAsync());
+              
                 return View(customers);
+
             }
             return NotFound();
-
         }
 
         // GET: Inventory/Details/5
@@ -65,7 +65,7 @@ namespace Moldovan_Andrei_Lab1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("CustomerID,Name,Adress,BirthDate")] Customer customer)
+        public async Task<ActionResult> Create([Bind("CustomerID,Name,Adress,BirthDate,City")] Customer customer)
         {
             if (!ModelState.IsValid) return View(customer);
             try
@@ -105,7 +105,7 @@ namespace Moldovan_Andrei_Lab1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind("CustomerID,Name,Adress,BirthDate")] Customer customer)
+        public async Task<ActionResult> Edit([Bind("CustomerID,Name,Adress,BirthDate,City")] Customer customer)
         {
             if (!ModelState.IsValid) return View(customer);
             var client = new HttpClient();
