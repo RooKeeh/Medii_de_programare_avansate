@@ -44,5 +44,10 @@ namespace Moldovan_Andrei_Lab1.Controllers
             };
             return View(await data.AsNoTracking().ToListAsync());
         }
+
+        public IActionResult Chat()
+        {
+            return View();
+        }
     }
 }
