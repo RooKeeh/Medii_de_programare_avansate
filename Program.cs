@@ -3,17 +3,52 @@ using Microsoft.Extensions.Options;
 using Moldovan_Andrei_Lab1.Data;
 using Moldovan_Andrei_Lab1.Hubs;
 using System.Configuration;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<LibraryContext>(options =>
+builder.Services.AddDbContext<IdentityContext>(options =>
 
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddDbContext<LibraryContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>().AddEntityFrameworkStores<IdentityContext>();
+
 builder.Services.AddSignalR();
+builder.Services.AddRazorPages();
+
+builder.Services.Configure<IdentityOptions>(options => {
+
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+    options.Lockout.MaxFailedAccessAttempts = 3;
+    options.Lockout.AllowedForNewUsers = true;
+
+    options.Password.RequiredLength = 8;
+});
+
+builder.Services.AddAuthorization(opts => {
+    opts.AddPolicy("OnlySales", policy => {
+        policy.RequireClaim("Department", "Sales");
+    });
+});
+
+builder.Services.AddAuthorization(opts => {
+    opts.AddPolicy("SalesManager", policy => {
+        policy.RequireRole("Manager");
+        policy.RequireClaim("Department", "Sales");
+    });
+});
+builder.Services.ConfigureApplicationCookie(opts =>
+{
+    opts.AccessDeniedPath = "/Identity/Account/AccessDenied";
+
+});
 
 var app = builder.Build();
 
@@ -35,6 +70,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 
@@ -43,5 +79,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.MapHub<ChatHub>("/Chat");
+app.MapRazorPages();
 
 app.Run();

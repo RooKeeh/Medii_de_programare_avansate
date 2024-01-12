@@ -10,9 +10,11 @@ using Moldovan_Andrei_Lab1.Models;
 using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Moldovan_Andrei_Lab1.Controllers
 {
+    [Authorize(Policy = "SalesManager")]
     public class CustomersController : Controller
     {
         private readonly LibraryContext _context;
