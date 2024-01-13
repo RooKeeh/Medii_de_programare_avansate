@@ -36,40 +36,58 @@ namespace Moldovan_Andrei_Lab1.Controllers
             }
             return View(customer);
         }
-        [HttpGet]
-        public IActionResult Edit(string id)
+        public IActionResult Delete(int? id)
         {
-            var client = new CustomerService.CustomerServiceClient(channel);
-            Models.Customer existingCustomer = client.GetCustomer(new CustomerRequest { CustomerId = id });
-            return View(existingCustomer);
-        }
-
-        [HttpPost]
-        public IActionResult Edit(GrpcCustomersService.Customer customer)
-        {
-            if (ModelState.IsValid)
+            if (id == null)
             {
-                var client = new CustomerService.CustomerServiceClient(channel);
-                var updatedCustomer = client.Update(customer);
-                return RedirectToAction(nameof(Index));
+                return NotFound();
+            }
+            var client = new CustomerService.CustomerServiceClient(channel);
+            GrpcCustomersService.Customer customer = client.Get(new CustomerId() { Id = (int)id });
+            if (customer == null)
+            {
+                return NotFound();
             }
             return View(customer);
         }
-
-        [HttpGet]
-        public IActionResult Delete(string id)
+        [HttpPost, ActionName("Delete")]
+        public IActionResult DeleteConfirmed(int id)
         {
             var client = new CustomerService.CustomerServiceClient(channel);
-            Models.Customer existingCustomer = client.GetCustomer(new CustomerRequest { CustomerId = id });
-            return View(existingCustomer);
-        }
-
-        [HttpPost]
-        public IActionResult DeleteConfirmed(string id)
-        {
-            var client = new CustomerService.CustomerServiceClient(channel);
-            client.Delete(new CustomerRequest { CustomerId = id });
+            Empty response = client.Delete(new CustomerId()
+            {
+                Id = id
+            });
             return RedirectToAction(nameof(Index));
+        }
+        public IActionResult Update(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            var client = new CustomerService.CustomerServiceClient(channel);
+            GrpcCustomersService.Customer customer = client.Get(new CustomerId() { Id = (int)id });
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return View(customer);
+        }
+        [HttpPost]
+        public IActionResult Update(int id, GrpcCustomersService.Customer customer)
+        {
+            if (id != customer.CustomerId)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                var client = new CustomerService.CustomerServiceClient(channel);
+                GrpcCustomersService.Customer response = client.Update(customer);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(customer);
         }
     }
 }
